@@ -17,9 +17,6 @@ const testConfig = {
   },
   languageOptions: {
     parserOptions: {
-      projectService: {
-        allowDefaultProject: ['*.ts*'],
-      },
       sourceType: 'module',
       ecmaFeatures: {
         jsx: true,
@@ -51,7 +48,7 @@ await (async function setupEsLintRuleTesters() {
 
   const ruleNames = await readdir(testDir);
   for (const ruleName of ruleNames) {
-    const rule = rules[ruleName];
+    const rule = rules[ruleName as keyof typeof rules];
     if (ruleName.endsWith('.json')) {
       continue;
     }
@@ -97,7 +94,7 @@ await (async function setupEsLintRuleTesters() {
       }
     }
     if (valid.length || invalid.length) {
-      await ruleTester.run(ruleName, rule, { valid, invalid });
+      await ruleTester.run(ruleName, rule as any, { valid, invalid });
     }
   }
 })();
